@@ -1,16 +1,15 @@
 interface BlogidPageProps {
-    params: {
-        blogid: string;
-    };
+    params: Promise<{ blogid: string }>;
 }
 
 
 
-export default function BlogIdPage({ params }: BlogidPageProps) {
+export default async function BlogIdPage({ params }: BlogidPageProps) {
+    const { blogid } = await params;
     return (
         <div>
             <h1>Hello from the blog [blogid] page</h1>
-            <p>Blog ID: {params.blogid}</p>
+            <p>Blog ID: {blogid}</p>
         </div>
     );
 }
