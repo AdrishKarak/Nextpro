@@ -14,6 +14,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { auth0 } from "better-auth/plugins";
+import { authClient } from "@/lib/auth-client";
+import z from "zod";
 
 export default function SignUpPage() {
     const form = useForm<SignUpSchemaType>({
@@ -25,8 +28,12 @@ export default function SignUpPage() {
         },
     });
 
-    function onSubmit() {
-        console.log("data");
+    async function onSubmit(data: z.infer<typeof signupSchema>) {
+        await authClient.signUp.email({
+            email: data.email,
+            name: data.name,
+            password: data.password,
+        })
     }
 
     return (
