@@ -1,5 +1,6 @@
 "use client"
 
+import { createBlogAction } from "@/app/actions";
 import { postSchema } from "@/app/schemas/blog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,7 +11,7 @@ import { api } from "@/convex/_generated/api.js";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "convex/react";
 import { Loader2 } from "lucide-react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -35,6 +36,7 @@ export default function CreateRoute() {
                 body: values.content,
                 title: values.title
             })
+            await createBlogAction();
             toast.success("Post created successfully")
             form.reset()
             router.push("/")
