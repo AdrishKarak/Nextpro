@@ -10,6 +10,7 @@ export const createPost = mutation({
         if (!user) {
             throw new ConvexError("Unauthorized");
         }
+
         const blogArticle = await ctx.db.insert("posts", {
             title: args.title,
             body: args.body,
