@@ -114,7 +114,7 @@ export function Navbar() {
             {/* Logo */}
             <Link href="/">
                 <h1 className="text-3xl font-bold">
-                    Next<span className="text-blue-500">Pro</span>
+                    Next<span className="text-primary">Pro</span>
                 </h1>
             </Link>
 
@@ -143,7 +143,7 @@ export function Navbar() {
                         <SheetHeader className="flex flex-row items-center justify-between">
                             <SheetTitle>
                                 <span className="text-2xl font-bold">
-                                    Next<span className="text-blue-500">Pro</span>
+                                    Next<span className="text-primary">Pro</span>
                                 </span>
                             </SheetTitle>
                             <Button
