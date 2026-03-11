@@ -33,11 +33,25 @@ export default function CreateRoute() {
 
     function onSubmit(values: z.infer<typeof postSchema>) {
         startTransition(async () => {
-            await createBlogAction(values);
-            toast.success("Post created successfully")
-            form.reset()
-        })
+
+            const formData = new FormData();
+            formData.append("title", values.title);
+            formData.append("content", values.content);
+            formData.append("image", values.image);
+
+            const res = await createBlogAction(formData);
+
+            if (res?.error) {
+                toast.error(res.error);
+                return;
+            }
+
+            toast.success("Post created successfully");
+            form.reset();
+            router.refresh();
+        });
     }
+
 
     return (
         <div className="py-9">
@@ -74,10 +88,15 @@ export default function CreateRoute() {
                             <Controller name="image" control={form.control} render={({ field, fieldState }) => (
                                 <Field>
                                     <FieldLabel>Image</FieldLabel>
-                                    <Input type="file" aria-invalid={fieldState.invalid} placeholder="Enter Blog Image" accept="image" onChange={(event) => {
-                                        const file = event.target.files?.[0];
-                                        field.onChange(file);
-                                    }} />
+                                    <Input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={(event) => {
+                                            const file = event.target.files?.[0];
+                                            field.onChange(file);
+                                        }}
+                                    />
+
                                     {fieldState.invalid && (<FieldError errors={[fieldState.error]} />)}
                                 </Field>
                             )} />

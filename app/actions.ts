@@ -1,49 +1,55 @@
-"use server"
+"use server";
 
-import z from "zod";
 import { postSchema } from "./schemas/blog";
-import { fetchMutation } from "convex/nextjs";
+import { fetchAuthMutation } from "@/lib/auth-server";
 import { api } from "@/convex/_generated/api";
 import { redirect } from "next/navigation";
-import { getToken } from "@/lib/auth-server";
 
-export async function createBlogAction(values: z.infer<typeof postSchema>) {
-    console.log("Action triggered");
-
+export async function createBlogAction(formData: FormData) {
     try {
-        const parsed = postSchema.safeParse(values);
+
+        const title = formData.get("title") as string;
+        const content = formData.get("content") as string;
+        const image = formData.get("image") as File;
+
+        const parsed = postSchema.safeParse({
+            title,
+            content,
+            image,
+        });
+
         if (!parsed.success) {
-            throw new Error("Something went wrong")
+            throw new Error("Invalid form data");
         }
 
-        const token = await getToken();
+        const uploadUrl = await fetchAuthMutation(
+            api.posts.generateUploadUrl,
+            {}
+        );
 
-        const imageUrl = await fetchMutation(api.posts.generateUploadUrl, {}, { token });
+        const bytes = await image.arrayBuffer();
 
-        const uploadResult = await fetch(imageUrl, {
+        const uploadResult = await fetch(uploadUrl, {
             method: "POST",
-            headers: {
-                "Content-Type": parsed.data.image.type
-            },
-            body: parsed.data.image,
-        })
+            body: bytes,
+        });
 
         if (!uploadResult.ok) {
             throw new Error("Failed to upload image");
         }
 
         const { storageId } = await uploadResult.json();
-        await fetchMutation(api.posts.createPost, {
-            title: parsed.data.title,
-            body: parsed.data.content,
-            imageStorageId: storageId
-        }, { token });
+
+        await fetchAuthMutation(api.posts.createPost, {
+            title,
+            body: content,
+            imageStorageId: storageId,
+        });
 
     } catch (error) {
-        return {
-            error: "Failed to upload image"
-        }
+        console.error(error);
+        return { error: "Failed to upload image" };
     }
 
-    return redirect("/");
+    redirect("/");
 }
