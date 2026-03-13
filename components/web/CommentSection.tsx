@@ -34,7 +34,7 @@ export function CommentSection() {
         startTransition(async () => {
             try {
                 await createComment(data);
-
+                form.reset();
                 toast.success("Comment posted");
             } catch {
                 toast.error("Failed to create post");
