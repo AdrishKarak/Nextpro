@@ -1,5 +1,6 @@
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { CommentSection } from "@/components/web/CommentSection";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { fetchQuery } from "convex/nextjs";
@@ -21,7 +22,7 @@ export default async function PostIdRoute({ params }: PostIdRouteProps) {
     }
     return (
         <div className="max-w-3xl mx-auto py-8 px-4 animate-in fade-in duration-500 relative">
-            <Link href="/blog" className={buttonVariants({ variant: "outline", className: "mb-4" })}>
+            <Link href="/blog" className={buttonVariants({ variant: "outline", className: "mb-4 hover:bg-pink-200 hover:text-pink-600 transition-all duration-300" })}>
                 <ArrowLeft className="size-4" />
                 Back to Blog
             </Link>
@@ -41,6 +42,7 @@ export default async function PostIdRoute({ params }: PostIdRouteProps) {
             </p>
 
             <Separator className="my-8" />
+            <CommentSection />
         </div>
     )
 }
