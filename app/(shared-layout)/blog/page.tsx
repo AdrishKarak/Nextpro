@@ -7,8 +7,10 @@ import { api } from "@/convex/_generated/api"
 import { fetchQuery } from "convex/nextjs";
 import { ArrowRight } from "lucide-react";
 import { Metadata } from "next";
+import { cacheLife, cacheTag } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
+import { connection } from "next/server";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
@@ -34,15 +36,15 @@ export default function BlogPage() {
                 </p>
             </div>
 
-            <Suspense fallback={<SkeletonLoadingUi />}>
-                <LoadBlogList />
-            </Suspense>
+            <LoadBlogList />
         </div>
     )
 };
 
 async function LoadBlogList() {
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    "use cache";
+    cacheLife("hours");
+    cacheTag("blog");
     const data = await fetchQuery(api.posts.getPosts);
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">

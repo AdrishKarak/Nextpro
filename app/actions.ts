@@ -4,7 +4,7 @@ import { postSchema } from "./schemas/blog";
 import { fetchAuthMutation } from "@/lib/auth-server";
 import { api } from "@/convex/_generated/api";
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import { updateTag } from "next/cache";
 
 export async function createBlogAction(formData: FormData) {
     try {
@@ -54,6 +54,6 @@ export async function createBlogAction(formData: FormData) {
         return { error: "Failed to upload image" };
     }
 
-    revalidatePath("/blog");
+    updateTag("blog");
     return redirect("/blog");
 }
