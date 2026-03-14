@@ -6,9 +6,21 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api"
 import { fetchQuery } from "convex/nextjs";
 import { ArrowRight } from "lucide-react";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+    title: "Blog | Nextpro",
+    description: "Read the latest blogs and stories from our community",
+    category: "Blogs & Articles",
+    keywords: ["Blog", "Articles", "Nextpro"],
+    creator: "Adrish",
+    publisher: "Adrish",
+    authors: [{ name: "Adrish Karak" }]
+
+}
 
 
 
