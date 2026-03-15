@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -103,7 +105,6 @@ export default function BlogPage() {
 
 /* ── Blog list (cached) ──────────────────────────────────────────────────── */
 async function LoadBlogList() {
-    "use cache";
     cacheLife("hours");
     cacheTag("blog");
 

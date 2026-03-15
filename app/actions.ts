@@ -8,7 +8,6 @@ import { updateTag } from "next/cache";
 
 export async function createBlogAction(formData: FormData) {
     try {
-
         const title = formData.get("title") as string;
         const content = formData.get("content") as string;
         const image = formData.get("image") as File;
@@ -47,13 +46,12 @@ export async function createBlogAction(formData: FormData) {
             imageStorageId: storageId,
         });
 
-
+        updateTag("blog");
 
     } catch (error) {
         console.error(error);
         return { error: "Failed to upload image" };
     }
 
-    updateTag("blog");
-    return redirect("/blog");
+    redirect("/blog");
 }
