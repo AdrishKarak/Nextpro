@@ -104,6 +104,7 @@ export default function BlogPage() {
 
 /* ── Blog list (cached) ──────────────────────────────────────────────────── */
 async function LoadBlogList() {
+    "use cache";
     cacheLife("hours");
     cacheTag("blog");
 
