@@ -1,4 +1,3 @@
-export const dynamic = "force-dynamic";
 
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
